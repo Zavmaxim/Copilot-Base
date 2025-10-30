@@ -1,0 +1,933 @@
+<!-- SharePoint Embed Snippet: HeatLoad widget (generated) -->
+<div class="spw-heatload" data-spw-root="heatload">
+<style>
+/* Scoped to container class per SharePoint rules */
+  /* Avoid all: initial (can collapse display). Keep it block and scoped. */
+  .spw-heatload { display: block; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  /* App theme: dark blue canvas with white foreground */
+  .spw-heatload { --spw-bg: #0b2a6f; --spw-fg: #ffffff; --spw-accent: #0b5fff; --spw-muted: #cbd5e1; --spw-border: #2b3b66;
+    --spw-chart-1: #4c8dff; --spw-chart-2: #7aa2ff; --spw-chart-3: #9ec5fe; --spw-chart-4: #74c69d;
+    --spw-chart-5: #ffd166; --spw-chart-6: #ef476f; --spw-chart-7: #06d6a0; --spw-chart-8: #8338ec; }
+  @media (prefers-color-scheme: dark) {
+    /* Keep same palette in dark mode to match requirements */
+    .spw-heatload { --spw-bg: #0b2a6f; --spw-fg: #ffffff; --spw-accent: #4c8dff; --spw-muted: #cbd5e1; --spw-border: #2b3b66; }
+  }
+  /* When Shadow DOM is not available, provide minimal scoping */
+  .spw-heatload .spw-container { display: block; box-sizing: border-box; color: var(--spw-fg); background: var(--spw-bg); padding: 20px; }
+  .spw-heatload .spw-header { font-weight: 600; margin: 0 0 12px; }
+  .spw-heatload .spw-note { font-size: 12px; color: var(--spw-muted); }
+  .spw-heatload .spw-card { border: 1px solid var(--spw-border); border-radius: 10px; padding: 20px; margin: 16px 0; }
+  /* Buttons: light gray background with dark text */
+  .spw-heatload .spw-btn { appearance: none; border: 1px solid #cccccc; background: #f0f0f0; color: #111111; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+  .spw-heatload .spw-field > .spw-btn + .spw-btn { margin-top: 8px; }
+  .spw-heatload .spw-btn:focus-visible { outline: 2px solid var(--spw-accent); outline-offset: 2px; }
+  .spw-heatload .spw-grid { display: grid; gap: 20px; }
+  /* Two/three-column gaps tuned so fields don't touch */
+  .spw-heatload .spw-cols-2 { grid-template-columns: 1fr 1fr; column-gap: 28px; }
+  .spw-heatload .spw-cols-3 { grid-template-columns: 1fr 1fr 1fr; column-gap: 24px; }
+  .spw-heatload .spw-cols-climate { column-gap: 32px; }
+  /* Toolbar rows */
+  .spw-heatload .spw-toolbar { display:flex; gap: 12px; align-items:center; justify-content:flex-start; }
+  .spw-heatload .spw-actions-bottom { display:grid; grid-template-columns: 1fr 1fr; }
+  .spw-heatload .spw-actions-bottom > .spw-btn:first-child { justify-self: start; }
+  .spw-heatload .spw-actions-bottom > .spw-btn:last-child { justify-self: end; }
+  /* Normalize label height so inputs align */
+  .spw-heatload .spw-cols-climate .spw-label { display:block; min-height: 28px; line-height: 1.3; }
+  .spw-heatload .spw-cols-climate { align-items: start; }
+  /* Actions row: keep buttons in their own column, avoid overlap */
+  .spw-heatload .spw-cols-actions { grid-template-columns: 1fr 1fr minmax(260px, 1fr); align-items: start; column-gap: 32px; }
+  .spw-heatload .spw-actions .spw-btn { width: 100%; }
+  @media (max-width: 1000px) {
+    .spw-heatload .spw-cols-actions { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 1200px) {
+    .spw-heatload .spw-cols-climate { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .spw-heatload .spw-cols-climate { grid-template-columns: 1fr; }
+  }
+  .spw-heatload .spw-cols-2 { grid-template-columns: 1fr 1fr; }
+  .spw-heatload .spw-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .spw-heatload .spw-field { display: grid; gap: 10px; min-width: 0; }
+  .spw-heatload .spw-label { font-size: 12px; color: var(--spw-muted); }
+  /* Inputs: white background with black text */
+  .spw-heatload .spw-input, .spw-heatload .spw-select { width: 100%; padding: 10px 12px; border: 1px solid #cccccc; border-radius: 8px; background: #ffffff; color: #000000; }
+  .spw-heatload .spw-error { color: #b00020; font-size: 12px; }
+  .spw-heatload .spw-section { margin-top: 20px; }
+  .spw-heatload .spw-section .spw-section-body { margin-top: 12px; }
+  .spw-heatload .spw-results { display: grid; gap: 8px; }
+  .spw-heatload .spw-cards { display: grid; gap: 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .spw-heatload .spw-card .spw-metric { font-size: 12px; color: var(--spw-muted); }
+  .spw-heatload .spw-card .spw-value { font-size: 18px; font-weight: 600; }
+  .spw-heatload table { width: 100%; border-collapse: collapse; }
+  .spw-heatload th, .spw-heatload td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--spw-border); }
+  .spw-heatload .spw-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+  .spw-heatload .spw-toggle { display:flex; align-items:center; gap:8px; font-weight:600; background:none; border:none; color:inherit; padding:6px 0; cursor:pointer; }
+  .spw-heatload .spw-toggle::before { content:'▸'; transition: transform .15s ease; }
+  .spw-heatload .spw-toggle[aria-expanded="true"]::before { transform: rotate(90deg); }
+  .spw-heatload .spw-btn.primary { background: var(--spw-accent); color: #fff; border-color: var(--spw-accent); }
+  /* Results section: paper-like light gray background with dark text */
+  .spw-heatload .spw-results-section { background: #f5f5f5; color: #111111; }
+  .spw-heatload .spw-results-section .spw-card .spw-metric { color: #111111; }
+  .spw-heatload .spw-results-section .spw-card .spw-value { color: #111111; }
+</style>
+</div>
+<script>
+(() => {
+  const NAME = 'HeatLoad';
+  const PREFIX = `[SPW:${NAME}]`;
+  const UNITS = { SI: 'si', IMPERIAL: 'imperial' };
+  const ROOT_ATTR = 'data-spw-root';
+  const ROOT_KEY = 'heatload';
+  const MOUNTED_ATTR = 'data-spw-mounted';
+
+  function detectLang() {
+    try {
+      const lang = (document.documentElement.lang || navigator.language || 'en').toString();
+      return lang ? lang.slice(0, 2).toLowerCase() : 'en';
+    } catch (e) { return 'en'; }
+  }
+
+  const I18N = {
+    en: {
+      widget_label: 'Heat Load Calculator',
+      ready: 'App version 0.1',
+      learn_more: 'Learn more',
+      project: 'Project', climate: 'Climate', geometry: 'Geometry', envelope: 'Envelope', ventilation: 'Ventilation', actions: 'Parameters',
+      project_name: 'Project name', location: 'Location', building_type: 'Building type',
+      ext_temp: 'External design temperature', int_temp: 'Internal design temperature', coldroom_temp: 'Cold-room temperature',
+      length: 'Length', width: 'Width', height: 'Height', floor_area: 'Floor area', roof_area: 'Roof area', volume: 'Volume',
+      walls_area: 'Walls area', walls_u: 'Walls U-value', walls_bridge: 'Walls bridge category',
+      cold_walls_area: 'Cold-room walls area', cold_walls_u: 'Cold-room walls U-value', cold_walls_bridge: 'Cold-room walls bridge',
+      floor_area_s: 'Floor area', floor_u_eff: 'Floor effective U-value', floor_constr: 'Floor construction',
+      windows_area: 'Windows area', windows_u: 'Windows U-value',
+      roof_u: 'Roof U-value',
+      doors_ext_area: 'External doors area', doors_ext_u: 'External doors U-value',
+      doors_cold_area: 'Cold-room doors area', doors_cold_u: 'Cold-room doors U-value',
+      ach: 'Air change rate (ACH)', tightness: 'Tightness category',
+      units: 'Units', si: 'SI (metric)', imperial: 'Imperial',
+      safety_margin: 'Safety margin (%)',
+      results: 'Results', capacity: 'Capacity (with margin)',
+      calc: 'Calculate', export_csv: 'Export CSV',
+      new_bldg: 'New (post-2000)', existing: 'Existing (1980–2000)', old: 'Old (pre-1980)',
+      insulated: 'Insulated', uninsulated: 'Uninsulated'
+    },
+    uk: {
+      widget_label: 'Калькулятор тепловтрат',
+      ready: 'Віджет готовий (Фаза 2)',
+      learn_more: 'Докладніше',
+      project: 'Проєкт', climate: 'Клімат', geometry: 'Геометрія', envelope: 'Огорожа', ventilation: 'Вентиляція', actions: 'Дії',
+      project_name: 'Назва проєкту', location: 'Локація', building_type: 'Тип будівлі',
+      ext_temp: 'Зовнішня розрахункова температура', int_temp: 'Внутрішня температура', coldroom_temp: 'Температура холодної кімнати',
+      length: 'Довжина', width: 'Ширина', height: 'Висота', floor_area: 'Площа підлоги', roof_area: 'Площа даху', volume: 'Об’єм',
+      walls_area: 'Площа стін', walls_u: 'U стін', walls_bridge: 'Тепломістки стін',
+      cold_walls_area: 'Стінки до холодних кімнат', cold_walls_u: 'U стінок до ХК', cold_walls_bridge: 'Тепломістки стінок до ХК',
+      floor_area_s: 'Площа підлоги', floor_u_eff: 'Ефективне U підлоги', floor_constr: 'Конструкція підлоги',
+      windows_area: 'Площа вікон', windows_u: 'U вікон',
+      roof_u: 'U даху',
+      doors_ext_area: 'Двері назовні (площа)', doors_ext_u: 'U дверей назовні',
+      doors_cold_area: 'Двері до холодних кімнат (площа)', doors_cold_u: 'U дверей до ХК',
+      ach: 'Кратність повітрообміну (ACH)', tightness: 'Герметичність',
+      units: 'Одиниці', si: 'SI (метрична)', imperial: 'Імперська',
+      safety_margin: 'Запас потужності (%)',
+      results: 'Результати', capacity: 'Потужність (із запасом)',
+      calc: 'Розрахувати', export_csv: 'Експорт CSV',
+      new_bldg: 'Нова (після 2000)', existing: 'Існуюча (1980–2000)', old: 'Стара (до 1980)',
+      insulated: 'Ізольована', uninsulated: 'Неізольована'
+    }
+  };
+
+  // Embedded lightweight Chart.js‑compatible renderer (doughnut only)
+  // If real Chart.js is present (via vendor inline), use it instead.
+  // API: new Chart(ctx,{ type:'doughnut', data:{ datasets:[{ data:[], backgroundColor:[] }] } })
+  class MiniChart {
+    constructor(ctx, config){ this.ctx = ctx; this.config = config || {}; this.isMiniChart = true; this._draw(); }
+    update(cfg){ if (cfg) this.config = cfg; this._draw(); }
+    destroy(){ const c = this.ctx?.canvas; if (c && this.ctx) { this.ctx.clearRect(0,0,c.width,c.height); } this.ctx = null; this.config = null; }
+    _draw(){
+      try{
+        const cfg = this.config || {}; if ((cfg.type||'doughnut') !== 'doughnut') return;
+        const ds = (cfg.data && cfg.data.datasets && cfg.data.datasets[0]) || { data:[], backgroundColor:[] };
+        const data = (ds.data || []).map(v => Math.max(0, Number(v)||0));
+        const colors = (ds.backgroundColor || []);
+        const ctx = this.ctx; if (!ctx) return; const canvas = ctx.canvas; if (!canvas) return;
+        const sum = data.reduce((a,b)=>a+b,0) || 1; let start = -Math.PI/2;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const cx = canvas.width/2, cy=canvas.height/2, r=Math.min(cx,cy)-10;
+        for (let i=0;i<data.length;i++){
+          const v = data[i]; const ang = (v/sum)*Math.PI*2; if (!ang) continue;
+          ctx.beginPath(); ctx.moveTo(cx,cy); ctx.fillStyle = colors[i % colors.length] || '#888';
+          ctx.arc(cx,cy,r,start,start+ang); ctx.closePath(); ctx.fill(); start += ang;
+        }
+        // Cutout for doughnut
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath(); ctx.arc(cx,cy,r*0.6,0,Math.PI*2); ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+      } catch(_) { /* draw best-effort without throwing */ }
+    }
+  }
+  const ChartGlobal = (typeof window !== 'undefined' && window.Chart) ? window.Chart : null;
+  const looksLikeChartJS = !!(ChartGlobal && ChartGlobal.defaults && ChartGlobal.overrides && typeof ChartGlobal.controllers === 'object');
+  const ChartImpl = looksLikeChartJS ? ChartGlobal : MiniChart;
+
+  // PRD validation ranges
+  const ranges = {
+    ints: { min: 15, max: 25 },
+    exts: { min: -25, max: 5 },
+    u: { walls: [0.10, 2.0], roof: [0.10, 1.5], floor: [0.15, 1.0], windows: [0.50, 5.0], doors: [0.50, 3.0] },
+    ach: [0.1, 3.0],
+    height: [2, 20],
+    floorArea: [100, 50000]
+  };
+
+  function byId(root, id) {
+    if (!root) return null;
+    try {
+      if (typeof root.getElementById === 'function') {
+        const el = root.getElementById(id);
+        if (el) return el;
+      }
+    } catch (_) { /* ignore */ }
+    return root.querySelector ? root.querySelector('#' + id) : null;
+  }
+  function setError(fieldWrap, msg){ let err = fieldWrap.querySelector('.spw-error'); if (!err) { err = document.createElement('div'); err.className='spw-error'; fieldWrap.appendChild(err); } err.textContent = msg || ''; }
+  function clearError(fieldWrap){ const err = fieldWrap.querySelector('.spw-error'); if (err) err.textContent = ''; }
+  function vNumber(val){
+    if (val === '' || val === null || val === undefined) return null;
+    const n = Number(val);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function validate(root){
+    const errs = [];
+    const get = (id) => byId(root, id);
+    const getVal = (id) => { const el = get(id); return el ? el.value : null; };
+    const setInvalid = (id, ok, msg) => {
+      const input = get(id);
+      if (!input) return;
+      const wrap = input.closest('.spw-field');
+      input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!ok) { setError(wrap, msg); errs.push({ id, msg }); } else { clearError(wrap); }
+    };
+    const intT = vNumber(getVal('int_temp'));
+    const extT = vNumber(getVal('ext_temp'));
+    const crT = vNumber(getVal('coldroom_temp'));
+    setInvalid('int_temp', intT !== null && intT >= ranges.ints.min && intT <= ranges.ints.max, `15–25 °C`);
+    setInvalid('ext_temp', extT !== null && extT >= ranges.exts.min && extT <= ranges.exts.max, `−25 to +5 °C`);
+    if (crT !== null) setInvalid('coldroom_temp', crT >= -35 && crT <= 15 && (intT===null || crT < intT), `−35 to +15 °C and < internal`);
+    const height = vNumber(getVal('height'));
+    setInvalid('height', height !== null && height >= ranges.height[0] && height <= ranges.height[1], `2–20 m`);
+    const floorArea = vNumber(getVal('floor_area'));
+    setInvalid('floor_area', floorArea !== null && floorArea >= ranges.floorArea[0] && floorArea <= ranges.floorArea[1], `100–50000 m²`);
+
+    // Length/width ratio
+    const length = vNumber(getVal('length'));
+    const width = vNumber(getVal('width'));
+    if (length !== null && width !== null && width > 0) {
+      const ratio = Math.max(length, width) / Math.min(length, width);
+      if (ratio > 10) {
+        setInvalid('length', false, `<10:1 ratio`); setInvalid('width', false, `<10:1 ratio`);
+      } else { setInvalid('length', true); setInvalid('width', true); }
+    }
+
+    // ΔT minimum 10°C
+    if (intT !== null && extT !== null) {
+      if ((intT - extT) < 10) {
+        setInvalid('int_temp', false, `ΔT ≥ 10°C`); setInvalid('ext_temp', false, `ΔT ≥ 10°C`);
+      }
+    }
+
+    // U-value ranges (SI thresholds). Validate only when corresponding area > 0.
+    const wallsU = vNumber(getVal('walls_u'));
+    if (wallsU !== null) setInvalid('walls_u', wallsU >= ranges.u.walls[0] && wallsU <= ranges.u.walls[1], `${ranges.u.walls[0]}–${ranges.u.walls[1]} W/m²·K`);
+    const roofU = vNumber(getVal('roof_u'));
+    const roofArea = vNumber(getVal('roof_area'));
+    if (roofArea && roofArea > 0) {
+      setInvalid('roof_u', roofU !== null && roofU >= ranges.u.roof[0] && roofU <= ranges.u.roof[1], `${ranges.u.roof[0]}–${ranges.u.roof[1]} W/m²·K`);
+    } else { setInvalid('roof_u', true); }
+    const floorU = vNumber(getVal('floor_u_eff'));
+    const floorEnvArea = vNumber(getVal('floor_area_env'));
+    if (floorEnvArea && floorEnvArea > 0) {
+      setInvalid('floor_u_eff', floorU !== null && floorU >= ranges.u.floor[0] && floorU <= ranges.u.floor[1], `${ranges.u.floor[0]}–${ranges.u.floor[1]} W/m²·K`);
+    } else { setInvalid('floor_u_eff', true); }
+    const winU = vNumber(getVal('windows_u'));
+    const winArea = vNumber(getVal('windows_area'));
+    if (winArea && winArea > 0) {
+      setInvalid('windows_u', winU !== null && winU >= ranges.u.windows[0] && winU <= ranges.u.windows[1], `${ranges.u.windows[0]}–${ranges.u.windows[1]} W/m²·K`);
+    } else { setInvalid('windows_u', true); }
+    const deU = vNumber(getVal('doors_ext_u'));
+    const deArea = vNumber(getVal('doors_ext_area'));
+    if (deArea && deArea > 0) {
+      setInvalid('doors_ext_u', deU !== null && deU >= ranges.u.doors[0] && deU <= ranges.u.doors[1], `${ranges.u.doors[0]}–${ranges.u.doors[1]} W/m²·K`);
+    } else { setInvalid('doors_ext_u', true); }
+    const dcU = vNumber(getVal('doors_cold_u'));
+    const dcArea = vNumber(getVal('doors_cold_area'));
+    if (dcArea && dcArea > 0) {
+      setInvalid('doors_cold_u', dcU !== null && dcU >= ranges.u.doors[0] && dcU <= ranges.u.doors[1], `${ranges.u.doors[0]}–${ranges.u.doors[1]} W/m²·K`);
+    } else { setInvalid('doors_cold_u', true); }
+    const cwU = vNumber(getVal('cold_walls_u'));
+    const cwArea = vNumber(getVal('cold_walls_area'));
+    if (cwArea && cwArea > 0) {
+      setInvalid('cold_walls_u', cwU !== null && cwU >= ranges.u.walls[0] && cwU <= ranges.u.walls[1], `${ranges.u.walls[0]}–${ranges.u.walls[1]} W/m²·K`);
+    } else { setInvalid('cold_walls_u', true); }
+
+    // ACH range
+    const ach = vNumber(getVal('ach'));
+    if (ach !== null) setInvalid('ach', ach >= ranges.ach[0] && ach <= ranges.ach[1], `${ranges.ach[0]}–${ranges.ach[1]} h⁻¹`);
+    return errs;
+  }
+
+  function toFixed(n, d=2){ return (Math.round(n * 10**d)/10**d).toString(); }
+
+  // Units handling
+  const units = {
+    current: UNITS.SI,
+    set(u){ this.current = u; },
+    isSI(){ return this.current === UNITS.SI; },
+    mToFt(m){ return m * 3.28084; }, ftToM(ft){ return ft / 3.28084; },
+    m2ToFt2(m2){ return m2 * 10.7639; }, ft2ToM2(ft2){ return ft2 / 10.7639; },
+    cToF(c){ return (c * 9/5) + 32; }, fToC(f){ return (f - 32) * 5/9; }
+  };
+
+  function fieldText(id, label){ const wrap = document.createElement('div'); wrap.className='spw-field'; const l = document.createElement('label'); l.className='spw-label'; l.htmlFor=id; l.textContent=label; const i = document.createElement('input'); i.id=id; i.name=id; i.className='spw-input'; i.type='text'; wrap.append(l,i); return wrap; }
+  function fieldNumber(id, label, unit){ const wrap = document.createElement('div'); wrap.className='spw-field'; const l = document.createElement('label'); l.className='spw-label'; l.htmlFor=id; l.textContent = unit ? `${label} (${unit})` : label; const i = document.createElement('input'); i.id=id; i.name=id; i.className='spw-input'; i.type='number'; i.inputMode='decimal'; i.step='any'; wrap.append(l,i); return wrap; }
+  function fieldSelect(id, label, options){ const wrap = document.createElement('div'); wrap.className='spw-field'; const l = document.createElement('label'); l.className='spw-label'; l.htmlFor=id; l.textContent=label; const s = document.createElement('select'); s.id=id; s.name=id; s.className='spw-select'; options.forEach(o => { const opt=document.createElement('option'); opt.value=o.v; opt.textContent=o.t; s.appendChild(opt); }); wrap.append(l,s); return wrap; }
+  function fieldsGrid(fieldArr, cols=2){ const g = document.createElement('div'); g.className=`spw-grid spw-cols-${cols}`; fieldArr.forEach(f => g.appendChild(f)); return g; }
+  function metricCard(label, value){ const c=document.createElement('div'); c.className='spw-card'; const m=document.createElement('div'); m.className='spw-metric'; m.textContent=label; const v=document.createElement('div'); v.className='spw-value'; v.textContent=value; c.append(m,v); return c; }
+
+  function updateUnitsUI(host, mode){
+    const map = {
+      si: { '°C':'°C','m':'m','m²':'m²','m³':'m³','W/m²·K':'W/m²·K','h⁻¹':'h⁻¹' },
+      imperial: { '°C':'°F','m':'ft','m²':'ft²','m³':'ft³','W/m²·K':'BTU/h·ft²·°F','h⁻¹':'h⁻¹' }
+    };
+    host.querySelectorAll('.spw-label').forEach(lab => {
+      lab.textContent = lab.textContent
+        .replace('(°C)', `(${map[mode]['°C']})`)
+        .replace('(m²)', `(${map[mode]['m²']})`)
+        .replace('(m³)', `(${map[mode]['m³']})`)
+        .replace('(m)', `(${map[mode]['m']})`)
+        .replace('(W/m²·K)', `(${map[mode]['W/m²·K']})`)
+        .replace('(h⁻¹)', `(${map[mode]['h⁻¹']})`);
+    });
+  }
+
+  function collectInputs(host){ const data = {}; host.querySelectorAll('input,select').forEach(el => { data[el.id] = el.value; }); return data; }
+  function toCSV(state){
+    const headers = Object.keys(state);
+    const values = headers.map(function(k){ return String(state[k]).replace(/"/g,'""'); });
+    return headers.join(',') + '\n' + values.join(',') + '\n';
+  }
+  function downloadCSV(csv, filename){ const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); setTimeout(() => URL.revokeObjectURL(url), 0); }
+  function toCSVContract(state, res){
+    // Columnar export: field,value,label rows
+    const now = new Date().toISOString();
+    const pick = (k) => (state[k] !== undefined && state[k] !== null ? state[k] : '');
+    const labels = exportLabels();
+    const pairs = [
+      ['project_name', pick('project_name')],
+      ['location', pick('location')],
+      ['building_type', pick('building_type')],
+      ['created_at', now],
+      ['ext_temp_c', pick('ext_temp')],
+      ['int_temp_c', pick('int_temp')],
+      ['coldroom_temp_c', pick('coldroom_temp')],
+      ['length_m', pick('length')],
+      ['width_m', pick('width')],
+      ['height_m', pick('height')],
+      ['floor_area_m2', pick('floor_area')],
+      ['roof_area_m2', pick('roof_area')],
+      ['volume_m3', pick('volume')],
+      ['walls_area_m2', pick('walls_area')],
+      ['walls_u_w_m2k', pick('walls_u')],
+      ['walls_bridge_category', pick('walls_bridge')],
+      ['cold_walls_area_m2', pick('cold_walls_area')],
+      ['cold_walls_u_w_m2k', pick('cold_walls_u')],
+      ['cold_walls_bridge_category', pick('cold_walls_bridge')],
+      ['floor_area_m2', pick('floor_area_env')],
+      ['floor_u_effective_w_m2k', pick('floor_u_eff')],
+      ['floor_construction', pick('floor_constr')],
+      ['windows_area_m2', pick('windows_area')],
+      ['windows_u_w_m2k', pick('windows_u')],
+      ['doors_ext_area_m2', pick('doors_ext_area')],
+      ['doors_ext_u_w_m2k', pick('doors_ext_u')],
+      ['doors_cold_area_m2', pick('doors_cold_area')],
+      ['doors_cold_u_w_m2k', pick('doors_cold_u')],
+      ['ach_per_hour', pick('ach')],
+      ['tightness_category', pick('tightness')],
+      ['transmission_loss_w', Math.round(res.phiT)],
+      ['ventilation_loss_w', Math.round(res.phiV)],
+      ['total_heat_load_w', Math.round(res.total)],
+      ['specific_w_per_m2', Math.round(res.specific)],
+      ['safety_margin_pct', res.marginPct],
+      ['total_with_margin_w', Math.round(res.totalWithMargin)],
+      ['computed_at', now]
+    ];
+    const lines = [['field','value','label']].concat(pairs).map(([k,v]) => `${csvEscapeSafe(k)},${csvEscapeSafe(v)},${csvEscapeSafe(labels[k] || k)}`);
+    return lines.join('\n') + '\n';
+  }
+
+  function getChartColors(host){
+    // Read CSS variables to respect theme
+    const style = getComputedStyle(host);
+    const arr = [];
+    for (let i=1;i<=8;i++){
+      const v = style.getPropertyValue(`--spw-chart-${i}`).trim();
+      arr.push(v || '#888');
+    }
+    return arr;
+  }
+
+  // CSV utilities
+  function csvEscape(s){ return ('' + s).replace(/\"/g,'""'); }
+  function csvEscapeSafe(s){ return ('' + s).replace(/"/g,'""'); }
+  function exportLabels(){
+    return {
+      project_name: 'Project name',
+      location: 'Location',
+      building_type: 'Building type',
+      created_at: 'Created at (ISO)',
+      ext_temp_c: 'External design temperature (°C)',
+      int_temp_c: 'Internal design temperature (°C)',
+      coldroom_temp_c: 'Cold-room temperature (°C)',
+      length_m: 'Building length (m)',
+      width_m: 'Building width (m)',
+      height_m: 'Building height (m)',
+      floor_area_m2: 'Floor area (m²)',
+      roof_area_m2: 'Roof area (m²)',
+      volume_m3: 'Building volume (m³)',
+      walls_area_m2: 'Walls area (m²)',
+      walls_u_w_m2k: 'Walls U-value (W/m²·K)',
+      walls_bridge_category: 'Walls thermal bridge (new/existing/old)',
+      cold_walls_area_m2: 'Cold-room walls area (m²)',
+      cold_walls_u_w_m2k: 'Cold-room walls U-value (W/m²·K)',
+      cold_walls_bridge_category: 'Cold-room walls bridge (new/existing/old)',
+      floor_area_m2: 'Floor area for envelope (m²)',
+      floor_u_effective_w_m2k: 'Floor effective U-value (W/m²·K)',
+      floor_construction: 'Floor construction',
+      windows_area_m2: 'Windows area (m²)',
+      windows_u_w_m2k: 'Windows U-value (W/m²·K)',
+      doors_ext_area_m2: 'External doors area (m²)',
+      doors_ext_u_w_m2k: 'External doors U-value (W/m²·K)',
+      doors_cold_area_m2: 'Cold-room doors area (m²)',
+      doors_cold_u_w_m2k: 'Cold-room doors U-value (W/m²·K)',
+      ach_per_hour: 'Air change rate (h⁻¹)',
+      tightness_category: 'Tightness category',
+      transmission_loss_w: 'Transmission loss (W)',
+      ventilation_loss_w: 'Ventilation loss (W)',
+      total_heat_load_w: 'Total heat load (W)',
+      specific_w_per_m2: 'Specific heat load (W/m²)',
+      safety_margin_pct: 'Safety margin (%)',
+      total_with_margin_w: 'Capacity with margin (W)',
+      computed_at: 'Computed at (ISO)'
+    };
+  }
+  function generateCsvTemplateColumn(){
+    const rows = [
+      ['field','value','label'],
+      ['length',50,'Building length (m)'],
+      ['width',40,'Building width (m)'],
+      ['height',10,'Building height (m)'],
+      ['floor_area',2000,'Floor area (m²)'],
+      ['roof_area',2000,'Roof area (m²)'],
+      ['volume',20000,'Building volume (m³)'],
+      ['walls_area',1800,'Walls area (m²)'],
+      ['walls_u',0.4,'Walls U-value (W/m²·K)'],
+      ['walls_bridge','existing','Walls thermal bridge (new/existing/old)'],
+      ['roof_u',0.25,'Roof U-value (W/m²·K)'],
+      ['cold_walls_area',0,'Cold-room walls area (m²)'],
+      ['cold_walls_u',0,'Cold-room walls U-value (W/m²·K)'],
+      ['cold_walls_bridge','existing','Cold-room walls bridge (new/existing/old)'],
+      ['floor_area_env',2000,'Floor area for envelope (m²)'],
+      ['floor_u_eff',0.3,'Floor effective U-value (W/m²·K)'],
+      ['floor_constr','insulated','Floor construction'],
+      ['windows_area',200,'Windows area (m²)'],
+      ['windows_u',1.8,'Windows U-value (W/m²·K)'],
+      ['doors_ext_area',20,'External doors area (m²)'],
+      ['doors_ext_u',2.0,'External doors U-value (W/m²·K)'],
+      ['doors_cold_area',0,'Cold-room doors area (m²)'],
+      ['doors_cold_u',0,'Cold-room doors U-value (W/m²·K)'],
+      ['ach',0.5,'Air change rate (h⁻¹)'],
+      ['tightness','standard','Tightness category'],
+      ['coldroom_temp',-18,'Cold-room temperature (°C)']
+    ];
+    return rows.map(r => r.map(csvEscape).join(',')).join('\n') + '\n';
+  }
+  function parseCsvFlexible(text){
+    const lines = text.split(/\r?\n/).filter(l => l.trim().length>0);
+    if (!lines.length) return null;
+    const hdr = csvSplit(lines[0]).map(s => s.trim());
+    const firstIsFieldHeader = hdr.length >= 2 && /^(field|key|param|name)$/i.test(hdr[0]);
+    // Horizontal only when not a field/value header row
+    if (!firstIsFieldHeader && lines.length >= 2 && hdr.length > 2) {
+      const vals = csvSplit(lines[1]);
+      const row = {};
+      hdr.forEach((h,i)=>{ row[h.trim().toLowerCase()] = vals[i]!==undefined?vals[i].trim():''; });
+      // sanity: require at least some known keys
+      if (row['length'] || row['floor_area'] || row['walls_u']) return row;
+    }
+    // Vertical: field,value[,label]; optional header row consumed when present
+    const row = {};
+    const start = firstIsFieldHeader ? 1 : 0;
+    for (let i=start;i<lines.length;i++){
+      const cols = csvSplit(lines[i]);
+      if (cols.length >= 2) {
+        const k = cols[0].trim().toLowerCase();
+        const v = cols[1].trim();
+        if (k) row[k] = v;
+      }
+    }
+    return Object.keys(row).length ? row : null;
+  }
+  function csvSplit(line){
+    const out=[]; let cur=''; let inQ=false; for(let i=0;i<line.length;i++){
+      const ch=line[i];
+      if (inQ){
+        if (ch==='"'){
+          if (line[i+1]==='"'){ cur+='"'; i++; }
+          else { inQ=false; }
+        } else cur+=ch;
+      } else {
+        if (ch==='"') inQ=true;
+        else if (ch===','){ out.push(cur); cur=''; }
+        else cur+=ch;
+      }
+    }
+    out.push(cur);
+    return out;
+  }
+  function applyCsvToFields(host, row){
+    const ids = [
+      'length','width','height','floor_area','roof_area','volume',
+      'walls_area','walls_u','walls_bridge','roof_u',
+      'cold_walls_area','cold_walls_u','cold_walls_bridge',
+      'floor_area_env','floor_u_eff','floor_constr',
+      'windows_area','windows_u',
+      'doors_ext_area','doors_ext_u',
+      'doors_cold_area','doors_cold_u',
+      'ach','tightness','coldroom_temp'
+    ];
+    // Shadow root: use querySelector
+    ids.forEach(id => {
+      const el = host.querySelector('#'+id);
+      if (!el) return;
+      var v = (Object.prototype.hasOwnProperty.call(row, id) ? row[id] : undefined);
+      if (v === undefined) {
+        var low = (typeof id === 'string') ? id.toLowerCase() : id;
+        if (Object.prototype.hasOwnProperty.call(row, low)) v = row[low];
+      }
+      if (v === undefined || v === null) v = '';
+      el.value = v;
+    });
+  }
+  function setSectionDisabled(host, disabled){
+    const disableIds = [
+      // Geometry
+      'length','width','height','floor_area','roof_area','volume',
+      // Envelope
+      'walls_area','walls_u','walls_bridge','roof_u',
+      'cold_walls_area','cold_walls_u','cold_walls_bridge',
+      'floor_area_env','floor_u_eff','floor_constr',
+      'windows_area','windows_u','doors_ext_area','doors_ext_u','doors_cold_area','doors_cold_u',
+      // Ventilation
+      'ach','tightness'
+    ];
+    disableIds.forEach(id => { const el=host.querySelector('#'+id); if (el) el.disabled = !!disabled; });
+  }
+
+  function bridgeDelta(category){ if (category==='new') return 0.05; if (category==='existing') return 0.10; if (category==='old') return 0.15; return 0.10; }
+
+  // Convert inputs to SI for computation depending on mode
+  function normalizeInputsSI(state, mode){
+    const si = { ...state };
+    const num = (k) => (state[k]!==undefined && state[k]!=='' ? Number(state[k]) : null);
+    if (mode === 'imperial') {
+      // lengths/areas/volume
+      ['length','width','height'].forEach(k => { const v=num(k); if (v!==null) si[k]=units.ftToM(v); });
+      ['floor_area','roof_area','walls_area','cold_walls_area','floor_area_env','windows_area','doors_ext_area','doors_cold_area'].forEach(k => { const v=num(k); if (v!==null) si[k]=units.ft2ToM2(v); });
+      const vol=num('volume'); if (vol!==null) si['volume']=vol/35.3147; // ft³→m³
+      // temperatures
+      const tKeys=['ext_temp','int_temp']; tKeys.forEach(k=>{ const v=num(k); if (v!==null) si[k]=units.fToC(v); });
+      // U-values BTU/h·ft²·°F → W/m²·K
+      const uKeys=['walls_u','roof_u','cold_walls_u','floor_u_eff','windows_u','doors_ext_u','doors_cold_u'];
+      uKeys.forEach(k=>{ const v=num(k); if (v!==null) si[k]=v*5.678263; });
+    } else {
+      // ensure numbers for SI mode
+      Object.keys(state).forEach(k => { if (state[k]!=='' && !isNaN(Number(state[k]))) si[k]=Number(state[k]); });
+    }
+    return si;
+  }
+
+  function compute(state, host){
+    const modeSel = host && host.querySelector ? host.querySelector('#units_select') : null;
+    const mode = (modeSel && modeSel.value) || 'si';
+    const s = normalizeInputsSI(state, mode);
+    const dT = (s.int_temp != null ? s.int_temp : 0) - (s.ext_temp != null ? s.ext_temp : 0);
+    const dTcr = (s.int_temp != null ? s.int_temp : 0) - ((s.coldroom_temp != null ? s.coldroom_temp : -18));
+    const wallsHT = (s.walls_area != null ? s.walls_area : 0) * ((s.walls_u != null ? s.walls_u : 0) + bridgeDelta(s.walls_bridge || 'existing'));
+    const coldWallsHT = (s.cold_walls_area != null ? s.cold_walls_area : 0) * ((s.cold_walls_u != null ? s.cold_walls_u : 0) + bridgeDelta(s.cold_walls_bridge || 'existing'));
+    const roofHT = (s.roof_area != null ? s.roof_area : 0) * (s.roof_u != null ? s.roof_u : 0);
+    const floorHT = (s.floor_area_env != null ? s.floor_area_env : 0) * (s.floor_u_eff != null ? s.floor_u_eff : 0);
+    const windowsHT = (s.windows_area != null ? s.windows_area : 0) * (s.windows_u != null ? s.windows_u : 0);
+    const doorsExtHT = (s.doors_ext_area != null ? s.doors_ext_area : 0) * (s.doors_ext_u != null ? s.doors_ext_u : 0);
+    const doorsColdHT = (s.doors_cold_area != null ? s.doors_cold_area : 0) * (s.doors_cold_u != null ? s.doors_cold_u : 0);
+    const compWalls = wallsHT * dT;
+    const compColdWalls = coldWallsHT * dTcr;
+    const compRoof = roofHT * dT;
+    const compFloor = floorHT * dT;
+    const compWindows = windowsHT * dT;
+    const compDoorsExt = doorsExtHT * dT;
+    const compDoorsCold = doorsColdHT * dTcr;
+    const phiT = compWalls + compColdWalls + compRoof + compFloor + compWindows + compDoorsExt + compDoorsCold;
+    const qV = (s.ach != null ? s.ach : 0) * (s.volume != null ? s.volume : 0); // m³/h
+    const phiV = 0.34 * qV * dT;
+    const total = phiT + phiV;
+    const specific = (s.floor_area != null ? s.floor_area : 0) > 0 ? total / s.floor_area : 0;
+    const marginPct = Math.max(0, Math.min(100, Number(state.safety_margin || 15)));
+    const totalWithMargin = total * (1 + marginPct/100);
+    const components = [
+      { name:'Walls', value:compWalls },
+      { name:'Cold walls', value:compColdWalls },
+      { name:'Roof', value:compRoof },
+      { name:'Floor', value:compFloor },
+      { name:'Windows', value:compWindows },
+      { name:'Doors ext', value:compDoorsExt },
+      { name:'Doors cold', value:compDoorsCold },
+      { name:'Ventilation', value:phiV }
+    ];
+    const sumComp = components.reduce((a,c)=>a+(c.value||0),0) || 1;
+    components.forEach(c => c.percent = (c.value/sumComp)*100);
+    return { dT, phiT, phiV, total, totalWithMargin, marginPct, specific, components };
+  }
+
+  let chartInstance = null;
+  function drawFallbackDoughnut(ctx, values, colors){
+    if (!ctx || !ctx.canvas) return;
+    const data = Array.isArray(values) ? values.map(v => Math.max(0, Number(v) || 0)) : [];
+    const total = data.reduce((sum, v) => sum + v, 0);
+    const sum = total || 1;
+    const canvas = ctx.canvas;
+    const cx = canvas.width/2;
+    const cy = canvas.height/2;
+    const radius = Math.min(cx, cy) - 10;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let start = -Math.PI/2;
+    data.forEach((value, idx) => {
+      const angle = (value / sum) * Math.PI * 2;
+      if (!angle) return;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.fillStyle = colors[idx % colors.length] || '#888';
+      ctx.arc(cx, cy, radius, start, start + angle);
+      ctx.closePath();
+      ctx.fill();
+      start += angle;
+    });
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function renderResults(host, res){
+    const fmtW = (w) => `${toFixed(w/1000,2)} kW`;
+    const fmtSpec = (wpm2) => `${toFixed(wpm2,1)} W/m²`;
+    host.querySelector('#metric_total .spw-value').textContent = fmtW(res.total);
+    host.querySelector('#metric_capacity .spw-value').textContent = fmtW(res.totalWithMargin);
+    host.querySelector('#metric_phi_t .spw-value').textContent = fmtW(res.phiT);
+    host.querySelector('#metric_phi_v .spw-value').textContent = fmtW(res.phiV);
+    host.querySelector('#metric_specific .spw-value').textContent = fmtSpec(res.specific);
+    const tbody = host.querySelector('#results_table tbody');
+    tbody.innerHTML = '';
+    const colors = getChartColors(host);
+    res.components.forEach((c, i) => {
+      const tr=document.createElement('tr');
+      const color = colors[i % colors.length];
+      tr.innerHTML = `<td><span class="spw-dot" style="background:${color}"></span>${c.name}</td><td>${toFixed(c.value,0)}</td><td>${toFixed(c.percent,1)}%</td>`;
+      tbody.appendChild(tr);
+    });
+    const canvas = host.querySelector('#results_chart');
+    const ctx = canvas.getContext('2d');
+    const chartConfig = { type:'doughnut', data:{ datasets:[{ data: res.components.map(c=>Math.max(0,c.value)), backgroundColor: colors }] } };
+    if (chartInstance && typeof chartInstance.destroy === 'function') {
+      try { chartInstance.destroy(); } catch (err) { console.warn(`${PREFIX} chart destroy failed`, err); }
+    }
+    try {
+      chartInstance = new ChartImpl(ctx, chartConfig);
+    } catch (err) {
+      console.warn(`${PREFIX} chart init fallback`, err);
+      chartInstance = new MiniChart(ctx, chartConfig);
+    }
+    if (!looksLikeChartJS || (chartInstance && chartInstance.isMiniChart)) {
+      drawFallbackDoughnut(ctx, chartConfig.data.datasets[0].data, colors);
+    }
+  }
+
+  function createUI(root, config, i18n) {
+    const host = document.createElement('div');
+    host.className = 'spw-container';
+    host.setAttribute('role', 'region');
+    host.setAttribute('aria-label', config.title || i18n.widget_label);
+    host.style.background = 'var(--spw-bg)';
+    host.style.color = 'var(--spw-fg)';
+
+    // Title
+    const titleCard = document.createElement('div');
+    titleCard.className = 'spw-card';
+    const h = document.createElement('h2'); h.className='spw-header'; h.textContent = i18n.widget_label;
+    const p = document.createElement('p'); p.className='spw-note'; p.textContent = i18n.ready;
+    titleCard.append(h, p);
+    host.appendChild(titleCard);
+
+    const section = (labelText) => { const s = document.createElement('section'); s.className='spw-section spw-card'; const h3 = document.createElement('h3'); h3.className='spw-header'; h3.textContent = labelText; s.appendChild(h3); return s; };
+    const collSection = (labelText, collapsed=true) => {
+      const s = document.createElement('section'); s.className='spw-section spw-card';
+      const btn = document.createElement('button'); btn.type='button'; btn.className='spw-toggle'; btn.setAttribute('aria-expanded', collapsed? 'false':'true'); btn.textContent = labelText;
+      const body = document.createElement('div'); body.className='spw-section-body'; body.style.display = collapsed? 'none':'block';
+      btn.addEventListener('click', () => { const exp = btn.getAttribute('aria-expanded')==='true'; btn.setAttribute('aria-expanded', (!exp).toString()); body.style.display = exp? 'none':'block'; });
+      s.append(btn, body); return { root: s, body };
+    };
+
+    // Top toolbar: CSV template + upload (single line before Parameters)
+    const toolsTop = document.createElement('div'); toolsTop.className='spw-card spw-toolbar';
+    const downloadTplBtn = document.createElement('button'); downloadTplBtn.className='spw-btn'; downloadTplBtn.type='button'; downloadTplBtn.id='btn_tpl'; downloadTplBtn.textContent='Download CSV Template';
+    const uploadBtn = document.createElement('button'); uploadBtn.className='spw-btn'; uploadBtn.type='button'; uploadBtn.id='btn_upload'; uploadBtn.textContent='Upload CSV…';
+    const fileInput = document.createElement('input'); fileInput.type='file'; fileInput.accept='.csv'; fileInput.style.display='none'; fileInput.id='csv_input'; fileInput.name='csv_input'; fileInput.setAttribute('aria-hidden','true'); fileInput.tabIndex = -1;
+    toolsTop.append(downloadTplBtn, uploadBtn, fileInput);
+    host.appendChild(toolsTop);
+
+    // Actions: Units + margin (Parameters)
+    const actions = section(i18n.actions); actions.classList.add('spw-actions');
+    const rowAct = document.createElement('div'); rowAct.className='spw-grid spw-cols-2';
+    const unitsWrap = document.createElement('div'); unitsWrap.className='spw-field';
+    const unitsLbl = document.createElement('label'); unitsLbl.className='spw-label'; unitsLbl.htmlFor='units_select'; unitsLbl.textContent = i18n.units;
+    const unitsSel = document.createElement('select'); unitsSel.id='units_select'; unitsSel.className='spw-select'; unitsSel.setAttribute('aria-label', i18n.units);
+    const optSI = document.createElement('option'); optSI.value=UNITS.SI; optSI.textContent=i18n.si; optSI.selected=true;
+    const optImp = document.createElement('option'); optImp.value=UNITS.IMPERIAL; optImp.textContent=i18n.imperial;
+    unitsSel.append(optSI, optImp);
+    unitsWrap.append(unitsLbl, unitsSel);
+    const marginWrap = document.createElement('div'); marginWrap.className='spw-field';
+    const marginLbl = document.createElement('label'); marginLbl.className='spw-label'; marginLbl.htmlFor='safety_margin'; marginLbl.textContent = i18n.safety_margin;
+    const marginInp = document.createElement('input'); marginInp.id='safety_margin'; marginInp.className='spw-input'; marginInp.type='number'; marginInp.inputMode='decimal'; marginInp.step='any'; marginInp.min='0'; marginInp.max='100'; marginInp.value = '15';
+    marginWrap.append(marginLbl, marginInp);
+    rowAct.append(unitsWrap, marginWrap); actions.appendChild(rowAct);
+
+    // Unlock CSV fields toggle (created here, placed after Climate)
+    const unlockWrap = document.createElement('div'); unlockWrap.className='spw-field';
+    const unlockLbl = document.createElement('label'); unlockLbl.className='spw-label'; unlockLbl.htmlFor='unlock_csv'; unlockLbl.textContent = 'Unlock CSV fields';
+    const unlockChk = document.createElement('input'); unlockChk.id='unlock_csv'; unlockChk.type='checkbox'; unlockChk.setAttribute('aria-label','Unlock CSV fields');
+    unlockWrap.append(unlockLbl, unlockChk);
+    host.appendChild(actions);
+
+    // Project
+    const proj = section(i18n.project);
+    proj.appendChild(fieldsGrid([
+      fieldText('project_name', i18n.project_name),
+      fieldText('location', i18n.location),
+      fieldText('building_type', i18n.building_type)
+    ]));
+    host.appendChild(proj);
+
+    // Climate
+    const clim = section(i18n.climate);
+    const climGrid = fieldsGrid([
+      fieldNumber('ext_temp', i18n.ext_temp, '°C'),
+      fieldNumber('int_temp', i18n.int_temp, '°C'),
+      fieldNumber('coldroom_temp', i18n.coldroom_temp, '°C')
+    ], 3);
+    climGrid.classList.add('spw-cols-climate');
+    clim.appendChild(climGrid);
+    host.appendChild(clim);
+    // CSV note and unlock toggle positioning: after Climate, before Geometry
+    const csvNote = document.createElement('p'); csvNote.className='spw-note'; csvNote.textContent = 'Geometry, Envelope, and Ventilation are CSV-driven. Upload a CSV to populate values. Use "Unlock CSV fields" to edit after upload.';
+    host.appendChild(csvNote);
+    host.appendChild(unlockWrap);
+    const crInput = host.querySelector('#coldroom_temp');
+    if (crInput && !crInput.value) crInput.value = '-18';
+
+    // Geometry (collapsible, collapsed by default)
+    const {root: geom, body: geomBody} = collSection(i18n.geometry, true);
+    geomBody.appendChild(fieldsGrid([
+      fieldNumber('length', i18n.length, 'm'),
+      fieldNumber('width', i18n.width, 'm'),
+      fieldNumber('height', i18n.height, 'm'),
+      fieldNumber('floor_area', i18n.floor_area, 'm²'),
+      fieldNumber('roof_area', i18n.roof_area, 'm²'),
+      fieldNumber('volume', i18n.volume, 'm³')
+    ], 2));
+    host.appendChild(geom);
+
+    // Envelope (collapsible, collapsed by default)
+    const {root: env, body: envBody} = collSection(i18n.envelope, true);
+    envBody.appendChild(fieldsGrid([
+      fieldNumber('walls_area', i18n.walls_area, 'm²'),
+      fieldNumber('walls_u', i18n.walls_u, 'W/m²·K'),
+      fieldSelect('walls_bridge', i18n.walls_bridge, [ {v:'new', t:i18n.new_bldg},{v:'existing', t:i18n.existing},{v:'old', t:i18n.old} ]),
+      fieldNumber('roof_u', i18n.roof_u, 'W/m²·K'),
+      fieldNumber('cold_walls_area', i18n.cold_walls_area, 'm²'),
+      fieldNumber('cold_walls_u', i18n.cold_walls_u, 'W/m²·K'),
+      fieldSelect('cold_walls_bridge', i18n.cold_walls_bridge, [ {v:'new', t:i18n.new_bldg},{v:'existing', t:i18n.existing},{v:'old', t:i18n.old} ]),
+      fieldNumber('floor_area_env', i18n.floor_area_s, 'm²'),
+      fieldNumber('floor_u_eff', i18n.floor_u_eff, 'W/m²·K'),
+      fieldSelect('floor_constr', i18n.floor_constr, [ {v:'insulated', t:i18n.insulated},{v:'uninsulated', t:i18n.uninsulated} ]),
+      fieldNumber('windows_area', i18n.windows_area, 'm²'),
+      fieldNumber('windows_u', i18n.windows_u, 'W/m²·K'),
+      fieldNumber('doors_ext_area', i18n.doors_ext_area, 'm²'),
+      fieldNumber('doors_ext_u', i18n.doors_ext_u, 'W/m²·K'),
+      fieldNumber('doors_cold_area', i18n.doors_cold_area, 'm²'),
+      fieldNumber('doors_cold_u', i18n.doors_cold_u, 'W/m²·K')
+    ], 2));
+    host.appendChild(env);
+
+    // Ventilation (collapsible, collapsed by default)
+    const {root: vent, body: ventBody} = collSection(i18n.ventilation, true);
+    ventBody.appendChild(fieldsGrid([
+      fieldNumber('ach', i18n.ach, 'h⁻¹'),
+      fieldText('tightness', i18n.tightness)
+    ]));
+    host.appendChild(vent);
+
+    // Bottom toolbar: Calculate + Export CSV (after Ventilation, before Results)
+    const actionsBottom = document.createElement('div'); actionsBottom.className='spw-card spw-toolbar spw-actions-bottom';
+    const calcBtn = document.createElement('button'); calcBtn.className='spw-btn'; calcBtn.type='button'; calcBtn.id='btn_calc'; calcBtn.textContent=i18n.calc;
+    const exportBtn = document.createElement('button'); exportBtn.className='spw-btn'; exportBtn.type='button'; exportBtn.id='btn_export'; exportBtn.textContent=i18n.export_csv;
+    actionsBottom.append(calcBtn, exportBtn);
+    host.appendChild(actionsBottom);
+    // Initial lock (after all fields exist)
+    setSectionDisabled(host, true);
+
+    // Enforce CSV-driven input for Geometry, Envelope, Ventilation (initially locked)
+
+    // Results section
+    const results = section(i18n.results || 'Results');
+    results.classList.add('spw-results-section');
+    const cards = document.createElement('div'); cards.className='spw-cards';
+    const cardTotal = metricCard('Total Heat Load', '—'); cardTotal.id='metric_total';
+    const cardCap = metricCard(i18n.capacity || 'Capacity (with margin)', '—'); cardCap.id='metric_capacity';
+    const cardT = metricCard('Transmission Loss', '—'); cardT.id='metric_phi_t';
+    const cardV = metricCard('Ventilation Loss', '—'); cardV.id='metric_phi_v';
+    const cardSpec = metricCard('Specific Heat Load', '—'); cardSpec.id='metric_specific';
+    cards.append(cardTotal, cardCap, cardT, cardV, cardSpec);
+    const tableWrap = document.createElement('div'); tableWrap.className='spw-results';
+    const tbl = document.createElement('table'); tbl.id='results_table';
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Component</th><th>W</th><th>%</th></tr>';
+    const tbody = document.createElement('tbody'); tbl.append(thead, tbody);
+    const canvas = document.createElement('canvas'); canvas.id='results_chart'; canvas.width=320; canvas.height=200;
+    tableWrap.append(tbl, canvas);
+    results.append(cards, tableWrap);
+    host.appendChild(results);
+
+    // Listeners & validation
+    const onValidate = () => validate(host);
+    const updateCalcState = () => { const errs = validate(host); calcBtn.classList.toggle('primary', errs.length===0); };
+    host.querySelectorAll('input,select').forEach((el) => {
+      el.addEventListener('blur', () => { onValidate(); updateCalcState(); });
+      el.addEventListener('change', () => { onValidate(); updateCalcState(); });
+    });
+    // Use the previously created elements (avoid redeclarations)
+    unitsSel.addEventListener('change', () => { units.set(unitsSel.value); updateUnitsUI(host, unitsSel.value); });
+    unlockChk.addEventListener('change', () => { setSectionDisabled(host, !unlockChk.checked); });
+    downloadTplBtn.addEventListener('click', () => {
+      const csv = generateCsvTemplateColumn();
+      downloadCSV(csv, 'heatload_template.csv');
+    });
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      const row = parseCsvFlexible(text);
+      if (!row) { console.warn(`${PREFIX} CSV parse failed`); return; }
+      applyCsvToFields(host, row);
+      // Lock sections to CSV as per requirement (unless unlock toggle is on)
+      setSectionDisabled(host, !unlockChk.checked);
+      const errs = validate(host);
+      if (errs.length) {
+        const first = host.querySelector('[aria-invalid="true"]');
+        if (first && first.scrollIntoView) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (first && first.focus) first.focus({ preventScroll: true });
+      }
+      updateCalcState();
+    });
+    calcBtn.addEventListener('click', () => {
+      const errs = validate(host);
+      if (errs.length) {
+        const first = host.querySelector('[aria-invalid="true"]');
+        if (first && first.scrollIntoView) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (first && first.focus) first.focus({ preventScroll: true });
+        console.warn(`${PREFIX} validation failed`, errs);
+        return;
+      }
+      const state = collectInputs(host);
+      const res = compute(state, host);
+      renderResults(host, res);
+    });
+    // Initialize button state
+    updateCalcState();
+    exportBtn.addEventListener('click', () => {
+      const errs = validate(host);
+      if (errs.length) { console.warn(`${PREFIX} export blocked: fix validation errors first`); return; }
+      const state = collectInputs(host);
+      const res = compute(state, host);
+      const csv = toCSVContract(state, res);
+      downloadCSV(csv, `heatload_${Date.now()}.csv`);
+    });
+
+    root.appendChild(host);
+  }
+
+  function safeParseConfig(el) {
+    try { return el.dataset && el.dataset.config ? JSON.parse(el.dataset.config) : {}; }
+    catch (e) { console.warn(`${PREFIX} invalid data-config JSON`, e); return {}; }
+  }
+
+  function mount(rootEl, config = {}) {
+    if (!rootEl) return console.warn(`${PREFIX} root not found`);
+    const lang = detectLang();
+    const i18n = I18N[lang] || I18N.en;
+    // Light DOM only (no Shadow DOM)
+    if (rootEl && rootEl.classList) {
+      rootEl.classList.add('spw-heatload');
+      rootEl.setAttribute(MOUNTED_ATTR, 'true');
+    }
+    createUI(rootEl, config, i18n);
+  }
+
+  try {
+    function tryMount(maxRetries){
+      var attempts = 0;
+      var mounted = false;
+      var SCRIPT = document.currentScript || null;
+      var selector = '.spw-heatload[' + ROOT_ATTR + '="' + ROOT_KEY + '"]';
+      function nextCandidate(){
+        if (SCRIPT && SCRIPT.previousElementSibling && SCRIPT.previousElementSibling.matches && SCRIPT.previousElementSibling.matches(selector) && !SCRIPT.previousElementSibling.hasAttribute(MOUNTED_ATTR)) {
+          return SCRIPT.previousElementSibling;
+        }
+        return document.querySelector(selector + ':not([' + MOUNTED_ATTR + '])');
+      }
+      function tick(){
+        var el = nextCandidate();
+        if (el && !mounted){
+          var cfg = safeParseConfig(el);
+          mount(el, cfg);
+          mounted = true;
+        } else if (attempts++ < maxRetries){
+          setTimeout(tick, 100);
+        } else {
+          console.warn(`${PREFIX} root not found after retries`);
+        }
+      }
+      tick();
+    }
+    function boot(){ tryMount(60); }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+  } catch (e) {
+    console.warn(`${PREFIX} init error`, e);
+  }
+})();
+</script>
